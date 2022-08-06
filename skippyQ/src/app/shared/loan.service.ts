@@ -44,10 +44,41 @@ export class LoanService {
 
   }
 
+  getAllLoansbyEmail(email): Observable<any> {
+    console.log(email)
+    return new Observable(observer => {
+      // Read collection '/loans'
+      firebase.firestore().collection('loans').where('username', '==', email).orderBy('duedate').onSnapshot(collection => {
+        let array = [];
+        collection.forEach(doc => {
+        
+          // Add loan into array if there's no error
+          try {
+            let loan = new Loan(doc.data().username, doc.data().status, doc.data().duedate.toDate(), doc.id);
+            array.push(loan);
+
+            // Read subcollection '/loans/<autoID>/items'
+            let dbItems = firebase.firestore().collection('loans/' + doc.id + '/items');
+            dbItems.onSnapshot(itemsCollection => {
+              loan.items = []; // Empty array
+              itemsCollection.forEach(itemDoc => {
+                let item = new Item(itemDoc.id, itemDoc.data().quantity);
+                loan.items.push(item);
+              });
+            });
+          } catch (error) { }
+
+        });
+        observer.next(array);
+      });
+    });
+  }
+
+
   getAllLoans(): Observable<any> {
     return new Observable(observer => {
       // Read collection '/loans'
-      firebase.firestore().collection('loans').orderBy('duedate').onSnapshot(collection => {
+      firebase.firestore().collection('loans').where('status', '==', 'pending').orderBy('duedate').onSnapshot(collection => {
         let array = [];
         collection.forEach(doc => {
         

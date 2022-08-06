@@ -1,8 +1,8 @@
 <ion-tabs>
 
-  <ion-tab-bar slot="bottom">
+  <ion-tab-bar *ngIf="role === 'user'" slot="bottom">
 
-    <ion-tab-button tab="new-loan">
+    <ion-tab-button tab="new-loan" selected>
       <ion-icon name="bag-add"></ion-icon>
       <ion-label>New Loan</ion-label>
     </ion-tab-button>
@@ -12,11 +12,40 @@
       <ion-label>My Loans</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="manage">
+
+
+  </ion-tab-bar>
+
+
+  <ion-tab-bar *ngIf="role === 'manager'" slot="bottom">
+
+
+
+    <ion-tab-button tab="manage" selected>
       <ion-icon name="checkbox"></ion-icon>
       <ion-label>Manage</ion-label>
     </ion-tab-button>
 
+
   </ion-tab-bar>
 
 </ion-tabs>
+
+
+
+
+
+<!-- <ion-tab-button tab="new-loan">
+  <ion-icon name="bag-add"></ion-icon>
+  <ion-label>New Loan</ion-label>
+</ion-tab-button>
+
+<ion-tab-button tab="loans">
+  <ion-icon name="file-tray-full"></ion-icon>
+  <ion-label>My Loans</ion-label>
+</ion-tab-button>
+
+<ion-tab-button tab="manage">
+  <ion-icon name="checkbox"></ion-icon>
+  <ion-label>Manage</ion-label>
+</ion-tab-button> -->

@@ -3,6 +3,8 @@ import { NavigationExtras, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Loan } from '../shared/loan';
 import { LoanService } from '../shared/loan.service';
+import firebase from 'firebase';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-loans',
@@ -10,15 +12,25 @@ import { LoanService } from '../shared/loan.service';
   styleUrls: ['loans.page.scss']
 })
 export class LoansPage {
-  loans: Loan[];
+  loans = [];
+  email = ""
+  constructor(private loanService: LoanService, public navCtrl: NavController,
+    private storage: Storage,
+    private router: Router) {
 
-  constructor(private loanService: LoanService, public navCtrl: NavController, private router: Router) {
-    this.loanService.getAllLoans()
+    // this.email = firebase.auth().currentUser.email
+    this.storage.create();
+    this.storage.get("email").then(e => {
+      console.log(e)
+      this.loanService.getAllLoansbyEmail(e)
       .subscribe(data => {
+      
         this.loans = data;
 
         console.log(this.loans)
       })
+    })
+    
   }
   
   getIconName(status: string):string{
