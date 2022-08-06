@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Manage Loans
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-item *ngFor="let loan of loans">
+      <ion-label>
+        <ion-icon name="person"></ion-icon>{{loan.username}}
+        <ion-label *ngFor="let itme of loan.items">
+        <h2 *ngIf="item.quantity > 0">{{item.id}} x {{item.quantity}}</h2>
+      </ion-label>
+      <ion-label>
+        <ion-button color="success" fill="outline" click="approve(loan)">APPROVE</ion-button>
+        <ion-button color="danger" fill="outline" click="reject(loan)">REJECT</ion-button>
+      </ion-label>
+      </ion-label>
+    
+    </ion-item>
+  </ion-list>
+
+
+</ion-content>
