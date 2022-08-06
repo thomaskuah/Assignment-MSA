@@ -16,10 +16,26 @@ export class DetailPage {
   status:string;
   duedate: Date;
 
+  getData = {}
+  itemList = []
+
   constructor(private route: ActivatedRoute, private router: Router, private loanService: LoanService) {
     this.loanID = this.route.snapshot.params.loanID;
 
-    
+    this.route.queryParams.subscribe(data => {
+ 
+      this.loanService.getLoanById(data.id)
+    .then(data=>{
+      console.log(data)
+      this.getData = data
+      this.loan = data;
+      this.status = this.loan.status;
+      this.duedate = this.loan.duedate;
+      this.items = this.loan.items;
+
+    });
+      
+    })
 
    // this.loanService.getAllLoans()
    // .subscribe(data => {
@@ -27,14 +43,7 @@ export class DetailPage {
    //   this.items = this.loan.items;
 
    // });
-    this.loanService.getLoanById(this.loanID)
-    .then(data=>{
-      this.loan = data;
-      this.status = this.loan.status;
-      this.duedate = this.loan.duedate;
-      this.items = this.loan.items;
-
-    });
+  
 
     
 
@@ -42,7 +51,7 @@ export class DetailPage {
    }
 
    delete() {
-    this.loanService.delete(this.loan);
+    this.loanService.delete(this.loan)
     this.router.navigate(['tabs/loans']);
    }
 

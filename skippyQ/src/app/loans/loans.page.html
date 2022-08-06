@@ -9,7 +9,7 @@
 <ion-content >
 
   <ion-list>
-    <ion-item *ngFor="let loan of loans" [routerLink]="['/detail']">
+    <ion-item *ngFor="let loan of loans" button  (click)="goTo(loan)" >
       
       <ion-icon slot="start" [name]="getIconName(loan.status)"></ion-icon>
       <ion-label>

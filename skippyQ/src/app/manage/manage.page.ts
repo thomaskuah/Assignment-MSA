@@ -11,12 +11,14 @@ export class ManagePage {
   loans: Loan[];
   constructor(private loanService: LoanService) { 
     this.loanService.getAllLoans().subscribe(data =>{
+      console.log(data)
       this.loans = data;
     })
   }
 
 
 approve(l:Loan){
+  console.log(l)
   this.loanService.approve(l);
 }
 

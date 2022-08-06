@@ -50,7 +50,7 @@ export class LoanService {
       firebase.firestore().collection('loans').orderBy('duedate').onSnapshot(collection => {
         let array = [];
         collection.forEach(doc => {
-
+        
           // Add loan into array if there's no error
           try {
             let loan = new Loan(doc.data().username, doc.data().status, doc.data().duedate.toDate(), doc.id);
@@ -78,7 +78,7 @@ export class LoanService {
     ref.get().then(doc => {
       if (doc.exists)
         ref.delete();
-    });
+    })
   }
 
   //update(L: Loan) {
@@ -89,9 +89,12 @@ export class LoanService {
   //}
 
   approve(L: Loan){
+    console.log('dsds dsds')
     const ref = firebase.firestore().collection("loans").doc(L.id)
     ref.update({
       status:'approved'
+    }).then(() => {
+      console.log("cuscess")
     })
   }
 
@@ -104,17 +107,21 @@ export class LoanService {
 
 
   getLoanById(id: string){
+    console.log(id)
     // Read document '/loans/<id>'
     return firebase.firestore().collection('loans').doc(id).get().then(doc => {
+      console.log(doc.data())
       let loan = new Loan(doc.data().username, doc.data().status, doc.data().duedate.toDate(), doc.id);
 
       // Read subcollection '/loans/<id>/items'
       return firebase.firestore().collection('loans/' + id + '/items').get().then(collection => {
         loan.items = []; // Empty array
         collection.forEach(doc => {
+          console.log(doc)
           let item = new Item(doc.id, doc.data().quantity);
           loan.items.push(item);
         })
+      
         return loan;
       });
     });

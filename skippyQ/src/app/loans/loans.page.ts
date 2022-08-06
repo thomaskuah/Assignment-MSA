@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { NavigationExtras, Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { Loan } from '../shared/loan';
 import { LoanService } from '../shared/loan.service';
 
@@ -10,10 +12,12 @@ import { LoanService } from '../shared/loan.service';
 export class LoansPage {
   loans: Loan[];
 
-  constructor(private loanService: LoanService) {
+  constructor(private loanService: LoanService, public navCtrl: NavController, private router: Router) {
     this.loanService.getAllLoans()
       .subscribe(data => {
         this.loans = data;
+
+        console.log(this.loans)
       })
   }
   
@@ -26,6 +30,19 @@ export class LoansPage {
       case 'pending':
         return 'cloud-circle';
     }
+  }
+
+  goTo(data) {
+    console.log(data.id)
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+          loan: data
+      }
+  };
+
+
+    this.router.navigate(['/detail'], {queryParams: data})
+
   }
 
 }
