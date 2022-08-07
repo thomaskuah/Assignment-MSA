@@ -46,4 +46,15 @@
   </ion-list>
 
 
+
+
+  <div id="floatChip">
+
+    <ion-chip *ngFor="let asset of assets" [color]="getColor(asset.count)">
+      <ion-label>{{asset.item}} ∙ <b>{{asset.count}}</b></ion-label>
+    </ion-chip>
+    
+  
+  </div>
+
 </ion-content>

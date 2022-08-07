@@ -3,3 +3,11 @@
 ion-radio-group {
     display: flex;
 }
+
+#floatChip {
+    display: inline-grid;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    padding: 20px;
+}

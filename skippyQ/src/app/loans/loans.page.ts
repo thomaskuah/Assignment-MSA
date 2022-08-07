@@ -72,6 +72,19 @@ export class LoansPage {
     }
   }
 
+  getColor(color) {
+
+    switch (color) {
+      case 'approved':
+        return 'success';
+      case 'pending':
+        return 'warning';
+      case 'rejected':
+        return 'danger';
+    }
+  }
+
+
   handleDate(e) {
     this.sortDate = e.detail.value;
     this.getData(this.email);
