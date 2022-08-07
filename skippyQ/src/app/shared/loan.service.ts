@@ -13,7 +13,7 @@ export class LoanService {
 
   constructor() { }
 
-  createLoan(items: Item[]) {
+  createLoan(items: Item[], email) {
 
     // Due date is 2 weeks after today 
     let duedate = new Date(); // Today
@@ -21,7 +21,7 @@ export class LoanService {
     duedate.setDate(duedate.getDate() + 14); // 2 weeks later
 
     // TODO: Get username logged in
-    let loan = new Loan('amy@nyp.sg', 'pending', duedate);
+    let loan = new Loan(email, 'pending', duedate);
 
     // Add to collection '/loans/<autoID>' 
     return firebase.firestore().collection('loans').add({

@@ -4,6 +4,7 @@ import { Item } from '../shared/item';
 import { ItemService } from '../shared/item.service';
 import { Loan } from '../shared/loan';
 import { LoanService } from '../shared/loan.service';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-new-loan',
@@ -17,7 +18,9 @@ export class NewLoanPage {
   constructor(
     private itemService: ItemService,
     private loanService: LoanService,
-    private toastController: ToastController) {
+    private toastController: ToastController,
+    private storage: Storage,
+    ) {
 
     this.itemService.getAllAsync().subscribe(result =>
       this.items = result
@@ -30,20 +33,26 @@ export class NewLoanPage {
     //   console.log(temp.id + ': ' + temp.quantity);
     // }
 
-    this.loanService.createLoan(this.items).then(async loan => {
+    this.storage.create();
+    this.storage.get("email").then(e => {
+      this.loanService.createLoan(this.items, e).then(async loan => {
 
-      const toast = await this.toastController.create({
-        message: 'Loan created with ID ' + loan.id,
-        duration: 2000,
-        position: 'top',
-        color: 'secondary'
+        const toast = await this.toastController.create({
+          message: 'Loan created with ID ' + loan.id,
+          duration: 2000,
+          position: 'top',
+          color: 'secondary'
+        });
+        toast.present();
+  
+        // After loan created successfully, reset all item quantity to 0
+        this.itemService.resetQuantity();
       });
-      toast.present();
+  
 
-      // After loan created successfully, reset all item quantity to 0
-      this.itemService.resetQuantity();
-    });
+    })
 
+ 
   }
 
 }
