@@ -9,32 +9,60 @@ import { Storage } from '@ionic/storage';
 @Component({
   selector: 'app-loans',
   templateUrl: 'loans.page.html',
-  styleUrls: ['loans.page.scss']
+  styleUrls: ['loans.page.scss'],
 })
 export class LoansPage {
+  sortDate = 'earliest';
+  sortStatus = 'all';
+
   loans = [];
-  email = ""
-  constructor(private loanService: LoanService, public navCtrl: NavController,
+  email = '';
+  constructor(
+    private loanService: LoanService,
+    public navCtrl: NavController,
     private storage: Storage,
-    private router: Router) {
-
+    private router: Router
+  ) {
     // this.email = firebase.auth().currentUser.email
-    this.storage.create();
-    this.storage.get("email").then(e => {
-      console.log(e)
-      this.loanService.getAllLoansbyEmail(e)
-      .subscribe(data => {
-      
-        this.loans = data;
 
-        console.log(this.loans)
-      })
-    })
-    
+    this.storage.create();
+    this.storage.get('email').then((e) => {
+      this.email = e;
+      this.getData(e);
+    });
   }
-  
-  getIconName(status: string):string{
-    switch(status){
+
+  getData(email) {
+    if (this.sortStatus != 'all') {
+      this.loanService
+        .getStatusLoansbyEmail(email, this.sortStatus)
+        .subscribe((data) => {
+          if (this.sortDate === 'earliest') {
+            this.loans = data;
+            console.log(this.loans);
+
+          } else {
+            this.loans = data.reverse();
+            console.log(this.loans);
+          }
+        });
+    } else {
+      this.loanService.getAllLoansbyEmail(email).subscribe((data) => {
+        if (this.sortDate === 'earliest') {
+          this.loans = data;
+          console.log(this.loans);
+        } else {
+          this.loans = data.reverse();
+          console.log(this.loans);
+        }
+      });
+    }
+  }
+
+  statusSorting() {}
+
+  getIconName(status: string): string {
+    switch (status) {
       case 'approved':
         return 'checkmark-circle';
       case 'rejected':
@@ -44,17 +72,24 @@ export class LoansPage {
     }
   }
 
-  goTo(data) {
-    console.log(data.id)
-    let navigationExtras: NavigationExtras = {
-      queryParams: {
-          loan: data
-      }
-  };
-
-
-    this.router.navigate(['/detail'], {queryParams: data})
-
+  handleDate(e) {
+    this.sortDate = e.detail.value;
+    this.getData(this.email);
   }
 
+  handleStatus(e) {
+    this.sortStatus = e.detail.value;
+    this.getData(this.email);
+  }
+
+  goTo(data) {
+    console.log(data.id);
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        loan: data,
+      },
+    };
+
+    this.router.navigate(['/detail'], { queryParams: data });
+  }
 }

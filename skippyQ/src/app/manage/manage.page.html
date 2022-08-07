@@ -8,7 +8,27 @@
 
 <ion-content>
 
-  <ion-list>
+ 
+  
+      <ion-list >
+        <ion-item>Sort By:</ion-item>
+        <ion-item >
+        
+            <!-- <ion-label>Sort</ion-label> -->
+          <ion-select [value]="currentSort" (ionChange)="handleChange($event)" interface="popover" placeholder="Sort Date">
+            <ion-select-option value="earliest">Earliest</ion-select-option>
+            <ion-select-option value="latest">Latest</ion-select-option>
+            <!-- <ion-select-option value="bananas">Bananas</ion-select-option> -->
+          </ion-select>
+
+
+        </ion-item>
+      </ion-list>
+
+
+
+
+      <ion-list>
     <ion-item *ngFor="let loan of loans">
       <ion-label>
         <ion-icon name="person"></ion-icon>{{loan.username}}
@@ -21,6 +41,7 @@
       </ion-label>
       </ion-label>
     
+
     </ion-item>
   </ion-list>
 

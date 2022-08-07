@@ -8,7 +8,35 @@
 
 <ion-content >
 
+
+
+  <div>
+    <ion-item >
+  
+      <ion-label>Sort Date</ion-label>
+    <ion-select [value]="sortDate" (ionChange)="handleDate($event)" interface="popover" placeholder="Sort Date">
+      <ion-select-option value="earliest">Earliest</ion-select-option>
+      <ion-select-option value="latest">Latest</ion-select-option>
+      <!-- <ion-select-option value="bananas">Bananas</ion-select-option> -->
+    </ion-select>
+    </ion-item>
+    <ion-item >
+      <ion-label>Sort Status</ion-label>
+      <!-- <ion-label>Sort</ion-label> -->
+    <ion-select [value]="sortStatus" (ionChange)="handleStatus($event)" interface="popover" placeholder="Sort Status">
+      <ion-select-option value="all">All</ion-select-option>
+      <ion-select-option value="approved">Approved</ion-select-option>
+      <ion-select-option value="rejected">Rejected</ion-select-option>
+      <ion-select-option value="pending">Pending</ion-select-option>
+      <!-- <ion-select-option value="bananas">Bananas</ion-select-option> -->
+    </ion-select>
+    </ion-item>
+  </div>
+
+
+
   <ion-list>
+
     <ion-item *ngFor="let loan of loans" button  (click)="goTo(loan)" >
       
       <ion-icon slot="start" [name]="getIconName(loan.status)"></ion-icon>
